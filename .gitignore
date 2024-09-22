@@ -3,5 +3,9 @@ __pycache__
 .venv
 .pip
 
+# Build stuff
+build
+*.whl
+
 # IDE specific
 .vscode
