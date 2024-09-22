@@ -1,0 +1,1 @@
+from ._test24_impl import hello
