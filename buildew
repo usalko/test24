@@ -85,12 +85,14 @@ fi
 
 if [ "$COMMAND" == "tests" ] || [ "$COMMAND" == "test" ]; then
     echo Run tests
-    .venv/bin/python -m pytest tests
+    .venv/bin/python -m pytest --show-capture=all tests
 
 fi
 
 if [ "$COMMAND" == "build" ]; then
     echo Build package
+    rm -fr build
+    .venv/bin/pip uninstall test24 -q
     .venv/bin/pip install .
     .venv/bin/pip wheel .
 fi

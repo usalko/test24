@@ -1,1 +1,2 @@
-from ._test24_impl import hello
+from ._test24_impl import *
+from .test24 import *
