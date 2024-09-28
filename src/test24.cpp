@@ -7,8 +7,9 @@
 #include <numeric>
 
 namespace nb = nanobind;
+using namespace nb::literals;
 
-// template <class T>
+// Join vector of strings
 std::string join(char delimiter,
                  std::vector<std::string>::iterator begin,
                  std::vector<std::string>::iterator end)
@@ -30,6 +31,11 @@ std::string join(char delimiter,
                            { return a + delimiter + b; });
 }
 
+struct BaseParameters
+{
+    std::vector<std::string> exclude;
+};
+
 NB_MODULE(_test24_impl, m)
 {
     m.def("hello", []()
@@ -40,4 +46,12 @@ NB_MODULE(_test24_impl, m)
           {
             std::string result("Hello world3!\n$words");
             return std::regex_replace(result, std::regex("\\$words"), join(',', words.begin(), words.end())); });
+
+    nb::class_<BaseParameters>(m, "BaseParameters")
+        .def(nb::init<>(), "Instantiates an instance of BaseParameters.\n\n")
+        .def("__init__", [](BaseParameters *t, std::vector<std::string> exclude)
+             {
+                new (t) BaseParameters();
+                t->exclude = exclude; }, "exclude"_a = std::vector<std::string>())
+        .def_rw("exclude", &BaseParameters::exclude);
 }

@@ -1,6 +1,5 @@
-from test24._test24_impl import *
-
 import test24
+from test24._test24_impl import *
 
 
 class TestHello:
@@ -25,3 +24,10 @@ class TestHello:
     def test_hello3(self, capsys):
         with capsys.disabled():
             print(hello3(['word1', 'word2', 'word3']))
+
+    def test_base_parameters(self, capsys):
+        with capsys.disabled():
+            base_parameters = BaseParameters()
+            print(f'Initial excludes are: {base_parameters.exclude}')
+            base_parameters.exclude = ['None']
+            print(f'After setup excludes are: {base_parameters.exclude}')
