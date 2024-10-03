@@ -1,10 +1,12 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/stl/vector.h>
 #include <nanobind/stl/string.h>
+#include <nanobind/stl/optional.h>
 #include <vector>
 #include <string>
 #include <regex>
 #include <numeric>
+#include <optional>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -34,6 +36,7 @@ std::string join(char delimiter,
 struct BaseParameters
 {
     std::vector<std::string> exclude;
+    std::optional<bool> check;
 };
 
 NB_MODULE(_test24_impl, m)
@@ -42,16 +45,22 @@ NB_MODULE(_test24_impl, m)
           { return "Hello world!"; });
     m.def("hello2", []()
           { return "Hello world2!"; });
-    m.def("hello3", [](std::vector<std::string> &words)
-          {
+    m.def(
+        "hello3",
+        [](
+            std::vector<std::string> &words,
+            std::optional<bool> check)
+        {
             std::string result("Hello world3!\n$words");
             return std::regex_replace(result, std::regex("\\$words"), join(',', words.begin(), words.end())); });
 
     nb::class_<BaseParameters>(m, "BaseParameters")
         .def(nb::init<>(), "Instantiates an instance of BaseParameters.\n\n")
-        .def("__init__", [](BaseParameters *t, std::vector<std::string> exclude)
+        .def("__init__", [](BaseParameters *t, std::vector<std::string> exclude, std::optional<bool> check)
              {
                 new (t) BaseParameters();
-                t->exclude = exclude; }, "exclude"_a = std::vector<std::string>())
-        .def_rw("exclude", &BaseParameters::exclude);
+                t->exclude = exclude;
+                t->check = check; }, "exclude"_a = std::vector<std::string>(), "check"_a = true)
+        .def_rw("exclude", &BaseParameters::exclude)
+        .def_rw("check", &BaseParameters::check);
 }

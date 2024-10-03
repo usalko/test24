@@ -23,7 +23,7 @@ class TestHello:
 
     def test_hello3(self, capsys):
         with capsys.disabled():
-            print(hello3(['word1', 'word2', 'word3']))
+            print(hello3(['word1', 'word2', 'word3'], True))
 
     def test_base_parameters(self, capsys):
         with capsys.disabled():
@@ -31,3 +31,7 @@ class TestHello:
             print(f'Initial excludes are: {base_parameters.exclude}')
             base_parameters.exclude = ['None']
             print(f'After setup excludes are: {base_parameters.exclude}')
+            
+            print(f'Initial check is: {base_parameters.check}')
+            base_parameters.check = False
+            print(f'After setup check is: {base_parameters.check}')
